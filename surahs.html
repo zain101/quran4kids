@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Surah Lessons</title>
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<div class="top"><h1>Surah Lessons<small>Choose a surah</small></h1><span class="who" id="who"></span><button class="icon" id="out" title="Sign out" aria-label="Sign out">&#128682;</button></div>
+<div class="wrap">
+ <p class="intro" id="intro"></p>
+ <div class="filters"><input type="search" id="q" placeholder="Search by name or number" aria-label="Search surahs"><label class="only"><input type="checkbox" id="only"> Only surahs with lessons</label></div>
+ <div class="grid" id="grid"></div>
+ <p class="none" id="none" style="display:none">No surahs match your search.</p>
+</div>
+<script src="assets/users.js"></script>
+<script src="assets/app.js"></script>
+<script>
+if (SurahSite.requireLogin()) {
+  document.getElementById('who').textContent = SurahSite.session().user;
+  document.getElementById('out').onclick = SurahSite.logout;
+  var all = SurahSite.SURAHS;
+  function has(s){ return s.animations.length || s.games.length || SurahSite.wsCount(s); }
+  var ready = all.filter(has).length;
+  document.getElementById('intro').innerHTML = 'Juz 30 (Juz Amma): surahs 78 to 114. <b>' + ready + ' of ' + all.length + '</b> surahs have lessons so far. The rest are on the way.';
+  function chip(ok, txt){ return '<span class="chip' + (ok ? '' : ' off') + '">' + txt + '</span>'; }
+  function render(){
+    var q = document.getElementById('q').value.replace(/^\s+|\s+$/g, '').toLowerCase();
+    var only = document.getElementById('only').checked, h = '', n = 0;
+    all.forEach(function(s){
+      if (only && !has(s)) { return; }
+      if (q && (s.name + ' ' + s.meaning + ' ' + s.id + ' ' + s.ar).toLowerCase().indexOf(q) < 0) { return; }
+      n++;
+      h += '<a class="card' + (has(s) ? '' : ' empty') + '" href="surah.html?id=' + s.id + '"><span class="num">Surah ' + s.id + '</span><span class="ayahs">' + s.ayahs + ' ayahs</span>' +
+        '<div class="ar">' + s.ar + '</div><h2>' + s.name + '</h2><div class="meaning">' + s.meaning + '</div><p class="about">' + s.about + '</p>' +
+        '<div class="chips">' + chip(s.animations.length, '&#127916; Animation') + chip(s.games.length, '&#127918; Game') + chip(SurahSite.wsCount(s), '&#128221; Worksheets') + '</div></a>';
+    });
+    document.getElementById('grid').innerHTML = h;
+    document.getElementById('none').style.display = n ? 'none' : 'block';
+  }
+  document.getElementById('q').oninput = render;
+  document.getElementById('only').onchange = render;
+  render();
+}
+</script></body></html>

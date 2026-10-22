@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Surah Lessons</title>
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<div class="top"><a class="icon" href="surahs.html" title="All surahs" aria-label="All surahs">&#8592;</a><h1 id="ttl">Surah<small id="sub"></small></h1><button class="icon" id="out" title="Sign out" aria-label="Sign out">&#128682;</button></div>
+<div class="tabs" role="tablist" id="tabs">
+ <button class="tab" role="tab" id="t-animation" data-k="animation" aria-selected="true">&#127916; Animation</button>
+ <button class="tab" role="tab" id="t-game" data-k="game" aria-selected="false">&#127918; Game</button>
+ <button class="tab" role="tab" id="t-worksheets" data-k="worksheets" aria-selected="false">&#128221; Worksheets</button>
+</div>
+<div class="panel on" id="p-animation" role="tabpanel"></div>
+<div class="panel" id="p-game" role="tabpanel"></div>
+<div class="panel" id="p-worksheets" role="tabpanel"></div>
+<script src="assets/users.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  if (!SurahSite.requireLogin()) { return; }
+  var id = parseInt(new URLSearchParams(location.search).get('id'), 10);
+  var s = SurahSite.byId(id);
+  if (!s) { location.replace('surahs.html'); return; }
+  document.title = 'Surah ' + s.name + ' - Surah Lessons';
+  document.getElementById('ttl').innerHTML = 'Surah ' + s.name + '<small>' + s.meaning + ' &bull; Surah ' + s.id + ' &bull; ' + s.ayahs + ' ayahs</small>';
+  document.getElementById('out').onclick = SurahSite.logout;
+  var loaded = {};
+  function soon(icon, what){ return '<div class="soon"><div class="big">' + icon + '</div><h3>Coming soon</h3><p>The ' + what + ' for Surah ' + s.name + ' will be added soon.</p></div>'; }
+  function frameBlock(kind, items){
+    var h = '<div class="vers">';
+    if (items.length > 1) { items.forEach(function(it, k){ h += '<button class="pill" data-k="' + k + '" aria-pressed="' + (k === 0) + '">' + it.label + '</button>'; }); }
+    h += '<a class="open" id="open-' + kind + '" target="_blank" rel="noopener" href="' + items[0].file + '">Open full screen &#10138;</a></div>';
+    h += '<iframe class="frame" id="fr-' + kind + '" src="' + items[0].file + '" title="' + s.name + ' ' + kind + '" allow="autoplay; fullscreen"></iframe>';
+    return h;
+  }
+  function wire(kind, items){
+    var pills = document.querySelectorAll('#p-' + kind + ' .pill');
+    for (var k = 0; k < pills.length; k++) { pills[k].onclick = function(){
+      var i = parseInt(this.getAttribute('data-k'), 10);
+      for (var j = 0; j < pills.length; j++) { pills[j].setAttribute('aria-pressed', j === i); }
+      document.getElementById('fr-' + kind).src = items[i].file;
+      document.getElementById('open-' + kind).href = items[i].file;
+    }; }
+  }
+  var builders = {
+    animation: function(){ var p = document.getElementById('p-animation'); if (!s.animations.length) { p.innerHTML = soon('&#127916;','animation'); return; } p.innerHTML = frameBlock('animation', s.animations); wire('animation', s.animations); },
+    game: function(){ var p = document.getElementById('p-game'); if (!s.games.length) { p.innerHTML = soon('&#127918;','game'); return; } p.innerHTML = frameBlock('game', s.games); wire('game', s.games); },
+    worksheets: function(){
+      var p = document.getElementById('p-worksheets');
+      var groups = [['5-8', 'Ages 5&ndash;8'], ['9-12', 'Ages 9&ndash;12']];
+      var h = '<div class="agebar" role="tablist">';
+      groups.forEach(function(g){ h += '<button class="age" role="tab" data-g="' + g[0] + '" aria-selected="false">' + g[1] + '</button>'; });
+      h += '</div><div id="agebody"></div>';
+      p.innerHTML = h;
+      function showAge(g, push){
+        var btns = p.querySelectorAll('.age');
+        for (var i = 0; i < btns.length; i++) { btns[i].setAttribute('aria-selected', btns[i].getAttribute('data-g') === g); }
+        var items = s.worksheets[g] || [];
+        var body = document.getElementById('agebody');
+        if (!items.length) { body.innerHTML = soon('&#128221;', 'worksheets for ages ' + g.replace('-', ' to ')); }
+        else {
+          var b = '<div class="vers">';
+          if (items.length > 1) { items.forEach(function(it, k){ b += '<button class="pill" data-k="' + k + '" aria-pressed="' + (k === 0) + '">' + it.label + '</button>'; }); }
+          b += '</div><div class="ws"><h3 id="ws-title"></h3><div class="acts"><a class="btn" id="ws-open" target="_blank" rel="noopener">Open PDF</a><a class="btn ghost" id="ws-dl" download>Download</a></div><iframe class="frame" id="ws-frame" title="Worksheet"></iframe></div>';
+          body.innerHTML = b;
+          var load = function(k){ var it = items[k]; document.getElementById('ws-title').textContent = it.label; document.getElementById('ws-open').href = it.file; document.getElementById('ws-dl').href = it.file; document.getElementById('ws-frame').src = it.file + '#view=FitH'; };
+          var pills = body.querySelectorAll('.pill');
+          for (var j = 0; j < pills.length; j++) { pills[j].onclick = function(){ var k = parseInt(this.getAttribute('data-k'), 10); for (var m = 0; m < pills.length; m++) { pills[m].setAttribute('aria-pressed', m === k); } load(k); }; }
+          load(0);
+        }
+        if (push) { history.replaceState(null, '', '#worksheets-' + g); }
+      }
+      var ages = p.querySelectorAll('.age');
+      for (var i = 0; i < ages.length; i++) { ages[i].onclick = function(){ showAge(this.getAttribute('data-g'), true); }; }
+      var hh = (location.hash || '').replace('#', '');
+      var start = hh === 'worksheets-9-12' ? '9-12' : (hh === 'worksheets-5-8' ? '5-8' : ((s.worksheets['5-8'] || []).length ? '5-8' : ((s.worksheets['9-12'] || []).length ? '9-12' : '5-8')));
+      showAge(start, false);
+    }
+  };
+  function show(k, push){
+    var tabs = document.querySelectorAll('.tab');
+    for (var i = 0; i < tabs.length; i++) {
+      var on = tabs[i].getAttribute('data-k') === k;
+      tabs[i].setAttribute('aria-selected', on);
+      document.getElementById('p-' + tabs[i].getAttribute('data-k')).className = 'panel' + (on ? ' on' : '');
+    }
+    if (!loaded[k]) { builders[k](); loaded[k] = true; }
+    if (push) { history.replaceState(null, '', '#' + k); }
+  }
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) { tabs[i].onclick = function(){ show(this.getAttribute('data-k'), true); }; }
+  var h0 = (location.hash || '').replace('#', '');
+  if (h0.indexOf('worksheets') === 0) { h0 = 'worksheets'; }
+  show(builders[h0] ? h0 : 'animation', false);
+})();
+</script></body></html>

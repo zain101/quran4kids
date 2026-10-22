@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Surah Lessons - Sign in</title>
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<div class="loginwrap"><form class="login" id="f" autocomplete="on">
+ <div class="moon">&#127769;</div>
+ <h1>Surah Lessons</h1>
+ <p>Please sign in to continue</p>
+ <label for="u">Username</label><input id="u" name="username" autocomplete="username" autocapitalize="none" required>
+ <label for="p">Password</label><input id="p" name="password" type="password" autocomplete="current-password" required>
+ <div class="err" id="err" role="alert"></div>
+ <button class="btn" type="submit">Sign in</button>
+ <div class="note">You will stay signed in on this device for 30 days.</div>
+</form></div>
+<script src="assets/users.js"></script>
+<script src="assets/app.js"></script>
+<script>
+if (SurahSite.session()) { location.replace('surahs.html'); }
+document.getElementById('f').addEventListener('submit', function(e){
+  e.preventDefault();
+  var err = document.getElementById('err'); err.textContent = '';
+  var r = SurahSite.login(document.getElementById('u').value, document.getElementById('p').value);
+  if (r === 'ok') { location.replace('surahs.html'); }
+  else if (r === 'storage') { err.textContent = 'Your browser is blocking saved sign-in. Please allow site data and try again.'; }
+  else { err.textContent = 'Wrong username or password. Please try again.'; }
+});
+</script></body></html>

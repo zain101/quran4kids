@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Make a user</title>
+<style>body{font-family:'Trebuchet MS',system-ui,sans-serif;background:#FDF8EF;color:#33271C;max-width:640px;margin:30px auto;padding:0 16px}
+input{width:100%;padding:11px;border:3px solid #F6DFAE;border-radius:12px;font:inherit;margin:4px 0 12px}
+button{background:#0E6B70;color:#fff;border:0;border-radius:999px;padding:11px 24px;font:inherit;font-weight:700;cursor:pointer}
+textarea{width:100%;height:90px;font-family:monospace;padding:10px;border:3px solid #F6DFAE;border-radius:12px;margin-top:8px}
+h1{color:#0E6B70}li{margin:6px 0}</style></head><body>
+<h1>Make a user</h1>
+<p>Type a username and password, then copy the line this page creates into <b>assets/users.js</b>, inside the list. Nothing is sent anywhere.</p>
+<label>Username</label><input id="u" autocapitalize="none">
+<label>Password</label><input id="p" type="text">
+<button id="go">Create line</button>
+<textarea id="o" readonly placeholder="Your line will appear here"></textarea>
+<ol><li>Open <b>assets/users.js</b> in a text editor.</li><li>Paste the line inside the square brackets. Put a comma after the line before it.</li><li>To remove the default user, delete the &ldquo;teacher&rdquo; line. Save the file.</li></ol>
+<script src="../assets/app.js"></script>
+<script>
+document.getElementById('go').onclick = function(){
+  var u = document.getElementById('u').value.replace(/^\s+|\s+$/g,''), p = document.getElementById('p').value;
+  if (!u || !p) { document.getElementById('o').value = 'Please type a username and a password.'; return; }
+  var salt = ''; var hex = '0123456789abcdef'; var a = new Uint8Array(8);
+  (window.crypto || window.msCrypto).getRandomValues(a); for (var i = 0; i < a.length; i++) { salt += hex.charAt(a[i] >> 4) + hex.charAt(a[i] & 15); }
+  document.getElementById('o').value = '  {user: ' + JSON.stringify(u) + ', salt: "' + salt + '", hash: "' + SurahSite.hashPassword(salt, p) + '"}';
+};
+</script></body></html>
