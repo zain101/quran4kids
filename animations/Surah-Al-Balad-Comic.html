@@ -372,4 +372,55 @@ function qNext(){
 }
 
 show(0);
-</script></body></html>
+</script><script>
+/* Surah Lessons: repeat each ayah's recitation 5 times */
+(function(){
+  var REPEATS = 5, left = 0, active = null, buttons = [];
+  if (typeof au === 'undefined') { return; }
+  var st = document.createElement('style');
+  st.textContent = '.rbtn{position:absolute;right:48px;top:8px;width:34px;height:34px;padding:0;border-radius:50%;border:3px solid #111;background:#FFD93D;color:#111;font-size:15px;line-height:1;cursor:pointer;box-shadow:2px 2px 0 #111;display:flex;align-items:center;justify-content:center;font-family:inherit}.rbtn.on{background:#FF4B3E;color:#fff;font-size:11px}.rbtn:hover{background:#FF4B3E;color:#fff}.pcap .ar{margin:0 84px 0 0}';
+  document.head.appendChild(st);
+  function reset(){ left = 0; active = null; buttons.forEach(function(b){ b.className = 'rbtn'; b.innerHTML = '\uD83D\uDD01'; }); }
+  var lbs = document.getElementsByClassName('lbtn'), list = [];
+  for (var k = 0; k < lbs.length; k++) { list.push(lbs[k]); }
+  list.forEach(function(lb){
+    var m = /playAyah\((\d+)/.exec(lb.getAttribute('onclick') || ''); if (!m) { return; }
+    var r = document.createElement('button'); r.className = 'rbtn'; r.innerHTML = '\uD83D\uDD01'; r.title = 'Repeat 5 times'; r.setAttribute('aria-label', 'Repeat this ayah 5 times');
+    lb.parentNode.insertBefore(r, lb.nextSibling); buttons.push(r);
+    r.onclick = function(){
+      if (active === r) { stopAudio(); return; }
+      stopAudio(); playAyah(parseInt(m[1], 10), lb);
+      active = r; left = REPEATS; r.className = 'rbtn on'; r.innerHTML = '1/' + REPEATS;
+    };
+  });
+  var stop0 = stopAudio;
+  stopAudio = function(){ reset(); return stop0.apply(this, arguments); };
+  var ended0 = au.onended;
+  au.onended = function(){
+    if (left > 1 && active) { left--; active.innerHTML = (REPEATS - left + 1) + '/' + REPEATS; au.currentTime = 0; var p = au.play(); if (p && p.catch) { p.catch(function(){ stopAudio(); }); } return; }
+    reset(); if (ended0) { ended0.apply(this, arguments); }
+  };
+})();
+</script>
+<script>
+/* Surah Lessons website: reports which ayah pages were viewed (does nothing when this page is opened on its own) */
+(function(){
+  var SL_ID = 90, seen = {}, TOTAL = 20, PER = 4, FIRST = 2, LAST = 6;
+  function post(m){ try { if (window.parent && window.parent !== window) { window.parent.postMessage(m, '*'); } } catch (e) {} }
+  function report(){
+    var v = []; for (var a = 1; a <= TOTAL; a++) { if (seen[a]) { v.push(a); } }
+    post({type: 'sl-anim', surahId: SL_ID, total: TOTAL, viewed: v, known: null});
+  }
+  function mark(){ if (cur >= FIRST && cur <= LAST) { for (var k = 1; k <= PER; k++) { seen[(cur - FIRST) * PER + k] = 1; } } }
+  var s0 = show;
+  show = function(n){ var res = s0.apply(this, arguments); mark(); report(); return res; };
+  window.addEventListener('message', function(e){
+    var d = e.data;
+    if (!d || d.type !== 'sl-state' || d.surahId !== SL_ID) { return; }
+    (d.viewed || []).forEach(function(a){ seen[a] = 1; });
+    mark(); report();
+  });
+  mark(); post({type: 'sl-ready', surahId: SL_ID}); report();
+})();
+</script>
+</body></html>

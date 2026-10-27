@@ -157,4 +157,29 @@ document.onkeydown = function(e){
   if (e.keyCode === 37) { $('prev').onclick(); }
 };
 render();
-</script></body></html>
+</script><script>
+/* Surah Lessons website: reports which ayahs were watched or marked "I know it" (does nothing when this page is opened on its own) */
+(function(){
+  var SL_ID = 99, map = [], N = 0, seen = {};
+  for (var x = 0; x < A.length; x++) { var ay = (A[x].ay === undefined) ? x + 1 : A[x].ay; map.push(ay); if (ay > 0) { N++; } }
+  function post(m){ try { if (window.parent && window.parent !== window) { window.parent.postMessage(m, '*'); } } catch (e) {} }
+  function report(){
+    var k = [], v = [];
+    for (var x = 0; x < A.length; x++) { if (map[x] > 0) { if (known[x]) { k.push(map[x]); } if (seen[x]) { v.push(map[x]); } } }
+    post({type: 'sl-anim', surahId: SL_ID, total: N, viewed: v, known: k});
+  }
+  var r0 = render;
+  render = function(){ var res = r0.apply(this, arguments); seen[i] = 1; report(); return res; };
+  window.addEventListener('message', function(e){
+    var d = e.data;
+    if (!d || d.type !== 'sl-state' || d.surahId !== SL_ID) { return; }
+    for (var x = 0; x < A.length; x++) {
+      var ay = map[x];
+      if (ay > 0) { if (d.known && d.known.indexOf(ay) >= 0) { known[x] = true; } if (d.viewed && d.viewed.indexOf(ay) >= 0) { seen[x] = 1; } }
+    }
+    r0(); seen[i] = 1; report();
+  });
+  seen[i] = 1; post({type: 'sl-ready', surahId: SL_ID}); report();
+})();
+</script>
+</body></html>

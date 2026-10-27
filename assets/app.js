@@ -63,7 +63,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 79,
@@ -77,7 +78,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 80,
@@ -91,7 +93,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 81,
@@ -105,7 +108,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 82,
@@ -119,7 +123,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 83,
@@ -133,7 +138,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 84,
@@ -162,6 +168,11 @@
     }
    ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Inshiqaq_Booklet.pdf",
+   "pages": 12,
+   "mb": 4.3
   }
  },
  {
@@ -186,6 +197,11 @@
     }
    ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Buruj_Booklet.pdf",
+   "pages": 12,
+   "mb": 4.4
   }
  },
  {
@@ -200,7 +216,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 87,
@@ -219,7 +236,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 88,
@@ -233,7 +251,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 89,
@@ -247,7 +266,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 90,
@@ -289,6 +309,11 @@
      "file": "worksheets/age-9-12/Surah_Al-Balad_Study_Guide_Age_11.pdf"
     }
    ]
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Balad_Booklet.pdf",
+   "pages": 12,
+   "mb": 4.6
   }
  },
  {
@@ -303,7 +328,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 92,
@@ -317,7 +343,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 93,
@@ -331,7 +358,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 94,
@@ -345,7 +373,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 95,
@@ -359,7 +388,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 96,
@@ -373,7 +403,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 97,
@@ -387,7 +418,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 98,
@@ -401,7 +433,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 99,
@@ -420,7 +453,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 100,
@@ -434,7 +468,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 101,
@@ -448,7 +483,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 102,
@@ -462,7 +498,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 103,
@@ -481,6 +518,11 @@
     }
    ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Asr_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.6
   }
  },
  {
@@ -495,7 +537,8 @@
   "worksheets": {
    "5-8": [],
    "9-12": []
-  }
+  },
+  "booklet": null
  },
  {
   "id": 105,
@@ -504,8 +547,22 @@
   "meaning": "The Elephant",
   "ayahs": 5,
   "about": "Allah protects His House and is stronger than any army.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-Al-Fil-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-Al-Fil-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_fil.html"
+   }
+  ],
   "worksheets": {
    "5-8": [
     {
@@ -514,6 +571,11 @@
     }
    ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Fil_Booklet.pdf",
+   "pages": 10,
+   "mb": 4.2
   }
  },
  {
@@ -533,6 +595,10 @@
    {
     "label": "Comic game",
     "file": "games/Surah-Quraysh-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_quraysh.html"
    }
   ],
   "worksheets": {
@@ -543,6 +609,11 @@
     }
    ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Quraysh_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.8
   }
  },
  {
@@ -562,6 +633,10 @@
    {
     "label": "Comic game",
     "file": "games/Surah-Al-Maun-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_maun.html"
    }
   ],
   "worksheets": {
@@ -576,6 +651,11 @@
     }
    ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Maun_Booklet.pdf",
+   "pages": 10,
+   "mb": 4.2
   }
  },
  {
@@ -585,11 +665,35 @@
   "meaning": "Abundance",
   "ayahs": 3,
   "about": "Allah gave the Prophet abundant blessings, so pray and give.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-Al-Kawthar-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-Al-Kawthar-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_kawthar.html"
+   }
+  ],
   "worksheets": {
-   "5-8": [],
+   "5-8": [
+    {
+     "label": "Small Kindness Book",
+     "file": "worksheets/age-5-8/Surah_Al-Kawthar_Small_Kindness_Book.pdf"
+    }
+   ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Kawthar_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.4
   }
  },
  {
@@ -599,11 +703,35 @@
   "meaning": "The Disbelievers",
   "ayahs": 6,
   "about": "Staying firm in worshipping Allah alone, with a clear message.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-Al-Kafirun-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-Al-Kafirun-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_kafirun.html"
+   }
+  ],
   "worksheets": {
-   "5-8": [],
+   "5-8": [
+    {
+     "label": "Small Kindness Book",
+     "file": "worksheets/age-5-8/Surah_Al-Kafirun_Small_Kindness_Book.pdf"
+    }
+   ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Kafirun_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.7
   }
  },
  {
@@ -613,11 +741,35 @@
   "meaning": "The Help",
   "ayahs": 3,
   "about": "Allah's help and victory: praise Him and ask His forgiveness.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-An-Nasr-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-An-Nasr-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_nasr.html"
+   }
+  ],
   "worksheets": {
-   "5-8": [],
+   "5-8": [
+    {
+     "label": "Small Kindness Book",
+     "file": "worksheets/age-5-8/Surah_An-Nasr_Small_Kindness_Book.pdf"
+    }
+   ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_An-Nasr_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.6
   }
  },
  {
@@ -627,11 +779,35 @@
   "meaning": "The Palm Fibre",
   "ayahs": 5,
   "about": "A warning for those who harm others and turn away from the truth.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-Al-Masad-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-Al-Masad-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_masad.html"
+   }
+  ],
   "worksheets": {
-   "5-8": [],
+   "5-8": [
+    {
+     "label": "Small Kindness Book",
+     "file": "worksheets/age-5-8/Surah_Al-Masad_Small_Kindness_Book.pdf"
+    }
+   ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Masad_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.8
   }
  },
  {
@@ -641,11 +817,35 @@
   "meaning": "Sincerity",
   "ayahs": 4,
   "about": "Allah is One, the Eternal, and nothing is like Him.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-Al-Ikhlas-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-Al-Ikhlas-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_ikhlas.html"
+   }
+  ],
   "worksheets": {
-   "5-8": [],
+   "5-8": [
+    {
+     "label": "Small Kindness Book",
+     "file": "worksheets/age-5-8/Surah_Al-Ikhlas_Small_Kindness_Book.pdf"
+    }
+   ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Ikhlas_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.3
   }
  },
  {
@@ -655,11 +855,35 @@
   "meaning": "The Daybreak",
   "ayahs": 5,
   "about": "Asking Allah for protection from harm.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-Al-Falaq-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-Al-Falaq-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_falaq.html"
+   }
+  ],
   "worksheets": {
-   "5-8": [],
+   "5-8": [
+    {
+     "label": "Small Kindness Book",
+     "file": "worksheets/age-5-8/Surah_Al-Falaq_Small_Kindness_Book.pdf"
+    }
+   ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_Al-Falaq_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.5
   }
  },
  {
@@ -669,11 +893,35 @@
   "meaning": "Mankind",
   "ayahs": 6,
   "about": "Asking Allah for protection from the whispers of evil.",
-  "animations": [],
-  "games": [],
+  "animations": [
+   {
+    "label": "Animation",
+    "file": "animations/Surah-An-Nas-Basic.html"
+   }
+  ],
+  "games": [
+   {
+    "label": "Comic game",
+    "file": "games/Surah-An-Nas-Game-Comic.html"
+   },
+   {
+    "label": "Memory & quiz",
+    "file": "games/quiz/game_nas.html"
+   }
+  ],
   "worksheets": {
-   "5-8": [],
+   "5-8": [
+    {
+     "label": "Small Kindness Book",
+     "file": "worksheets/age-5-8/Surah_An-Nas_Small_Kindness_Book.pdf"
+    }
+   ],
    "9-12": []
+  },
+  "booklet": {
+   "file": "worksheets/booklets/Surah_An-Nas_Booklet.pdf",
+   "pages": 10,
+   "mb": 3.4
   }
  }
 ];

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My progress - Surah Lessons</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/progress.css">
+</head><body>
+<div class="top"><a class="icon" href="surahs.html" title="All surahs" aria-label="All surahs">&#8592;</a><h1>My progress<small>Juz 30 &bull; from the animations</small></h1><span class="who" id="who"></span><button class="outbtn" id="out" title="Sign out" aria-label="Sign out">Logout</button></div>
+<div class="wrap">
+ <div class="tiles" id="tiles"></div>
+ <div class="panelbox"><h2>Overall</h2><div class="pbar big" id="obar"><b></b><i></i></div><div class="plabel" id="olabel"></div></div>
+ <div class="panelbox">
+  <h2>Surahs</h2>
+  <div class="legend"><span class="lv">watched</span><span class="lk">known (&#9734; I know it!)</span></div>
+  <div class="fpills" id="fp">
+   <button class="pill" data-f="all" aria-pressed="true">All</button><button class="pill" data-f="inprogress" aria-pressed="false">In progress</button><button class="pill" data-f="completed" aria-pressed="false">Completed</button><button class="pill" data-f="notstarted" aria-pressed="false">Not started</button>
+  </div>
+  <div id="rows"></div>
+ </div>
+ <div class="panelbox">
+  <h2>Save, move or reset</h2>
+  <p>Progress is kept in this browser. Download a backup file to keep it safe or to move it to another device, then load it there.</p>
+  <div class="tools"><button class="sm-btn" id="exp">Download backup</button><button class="sm-btn" id="imp">Load backup</button><button class="sm-btn danger" id="rst">Reset my progress</button><input type="file" id="file" accept=".json,application/json" style="display:none"></div>
+  <div class="msg" id="msg" role="status"></div>
+ </div>
+</div>
+<script src="assets/users.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/progress.js"></script>
+<script>
+if (SurahSite.requireLogin()) {
+  var P = SurahProgress, all = SurahSite.SURAHS, filter = 'all';
+  document.getElementById('who').textContent = SurahSite.session().user;
+  document.getElementById('out').onclick = SurahSite.logout;
+  function esc(t){ return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function say(t, bad){ var m = document.getElementById('msg'); m.textContent = t; m.className = 'msg' + (bad ? ' bad' : ''); }
+  function renderAll(){
+    var o = P.overall();
+    document.getElementById('tiles').innerHTML = '<div class="tile ok"><b>' + o.completed + '</b><span>Completed</span></div><div class="tile"><b>' + o.inprogress + '</b><span>In progress</span></div><div class="tile"><b>' + o.notstarted + '</b><span>Not started</span></div>';
+    var bar = document.getElementById('obar');
+    bar.getElementsByTagName('b')[0].style.width = (o.ayahs ? Math.round(Math.max(o.viewed, o.known) * 100 / o.ayahs) : 0) + '%';
+    bar.getElementsByTagName('i')[0].style.width = o.pct + '%';
+    document.getElementById('olabel').textContent = o.known + ' of ' + o.ayahs + ' ayahs known (' + o.pct + '%) and ' + o.viewed + ' watched, across ' + o.surahs + ' surahs';
+    var h = '';
+    all.forEach(function(s){
+      var ps = P.summary(s), st = ps.complete ? 'completed' : (ps.started ? 'inprogress' : 'notstarted');
+      if (filter !== 'all' && filter !== st) { return; }
+      h += '<a class="prow" href="surah.html?id=' + s.id + '"><span class="n">' + s.id + '</span><div><div class="nm">' + esc(s.name) + '</div><div class="pbar' + (ps.complete ? ' ok' : '') + '"><b style="width:' + ps.vpct + '%"></b><i style="width:' + ps.pct + '%"></i></div></div><span class="st' + (ps.complete ? ' ok' : '') + '">' +
+           (ps.complete ? '&#10003; Done' : (ps.started ? ps.known + '/' + ps.n + ' known' : (ps.hasAnim ? 'Not started' : 'No animation yet'))) + '</span></a>';
+    });
+    document.getElementById('rows').innerHTML = h || '<p>No surahs here yet.</p>';
+  }
+  var fps = document.querySelectorAll('#fp .pill');
+  for (var i = 0; i < fps.length; i++) { fps[i].onclick = function(){ filter = this.getAttribute('data-f'); for (var j = 0; j < fps.length; j++) { fps[j].setAttribute('aria-pressed', fps[j] === this); } renderAll(); }; }
+  document.getElementById('exp').onclick = function(){
+    var blob = new Blob([P.exportJSON()], {type: 'application/json'}), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'surah-lessons-backup-' + SurahSite.session().user + '-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); say('Backup downloaded.');
+  };
+  document.getElementById('imp').onclick = function(){ document.getElementById('file').click(); };
+  document.getElementById('file').onchange = function(){
+    var f = this.files[0], inp = this; if (!f) { return; }
+    var rd = new FileReader();
+    rd.onload = function(){
+      if (!window.confirm('Replace the progress in this browser with the backup file?')) { inp.value = ''; return; }
+      if (P.importJSON(String(rd.result))) { say('Backup loaded.'); renderAll(); } else { say('That file is not a valid backup.', true); }
+      inp.value = '';
+    };
+    rd.readAsText(f);
+  };
+  document.getElementById('rst').onclick = function(){ if (window.confirm('Reset all of your animation progress? This cannot be undone.')) { P.reset(); say('Progress reset.'); renderAll(); } };
+  renderAll();
+}
+</script></body></html>

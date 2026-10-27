@@ -3,8 +3,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Surah Lessons</title>
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/progress.css">
 </head><body>
-<div class="top"><h1>Surah Lessons<small>Choose a surah</small></h1><span class="who" id="who"></span><button class="icon" id="out" title="Sign out" aria-label="Sign out">&#128682;</button></div>
+<div class="top"><h1>Surah Lessons<small>Choose a surah</small></h1><span class="who" id="who"></span><a class="icon" href="progress.html" title="My progress" aria-label="My progress">&#128202;</a><button class="outbtn" id="out" title="Sign out" aria-label="Sign out">Logout</button></div>
 <div class="wrap">
  <p class="intro" id="intro"></p>
  <div class="filters"><input type="search" id="q" placeholder="Search by name or number" aria-label="Search surahs"><label class="only"><input type="checkbox" id="only"> Only surahs with lessons</label></div>
@@ -13,6 +14,7 @@
 </div>
 <script src="assets/users.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/progress.js"></script>
 <script>
 if (SurahSite.requireLogin()) {
   document.getElementById('who').textContent = SurahSite.session().user;
@@ -31,7 +33,13 @@ if (SurahSite.requireLogin()) {
       n++;
       h += '<a class="card' + (has(s) ? '' : ' empty') + '" href="surah.html?id=' + s.id + '"><span class="num">Surah ' + s.id + '</span><span class="ayahs">' + s.ayahs + ' ayahs</span>' +
         '<div class="ar">' + s.ar + '</div><h2>' + s.name + '</h2><div class="meaning">' + s.meaning + '</div><p class="about">' + s.about + '</p>' +
-        '<div class="chips">' + chip(s.animations.length, '&#127916; Animation') + chip(s.games.length, '&#127918; Game') + chip(SurahSite.wsCount(s), '&#128221; Worksheets') + '</div></a>';
+        '<div class="chips">' + chip(s.animations.length, '&#127916; Animation') + chip(s.games.length, '&#127918; Game') + chip(SurahSite.wsCount(s), '&#128221; Worksheets') + '</div>' +
+        (function(){
+          var ps = SurahProgress.summary(s);
+          if (!ps.hasAnim) { return '<div class="pbar"><i style="width:0%"></i></div><div class="plabel">Animation coming soon</div>'; }
+          return '<div class="pbar' + (ps.complete ? ' ok' : '') + '"><b style="width:' + ps.vpct + '%"></b><i style="width:' + ps.pct + '%"></i></div><div class="plabel' + (ps.complete ? ' ok' : '') + '">' +
+                 (ps.complete ? '&#10003; All ayahs known' : (ps.started ? ps.known + ' known &bull; ' + ps.viewed + ' watched of ' + ps.n : 'Not started')) + '</div>';
+        })() + '</a>';
     });
     document.getElementById('grid').innerHTML = h;
     document.getElementById('none').style.display = n ? 'none' : 'block';

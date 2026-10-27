@@ -3,8 +3,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Surah Lessons</title>
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/progress.css">
 </head><body>
-<div class="top"><a class="icon" href="surahs.html" title="All surahs" aria-label="All surahs">&#8592;</a><h1 id="ttl">Surah<small id="sub"></small></h1><button class="icon" id="out" title="Sign out" aria-label="Sign out">&#128682;</button></div>
+<div class="top"><a class="icon" href="surahs.html" title="All surahs" aria-label="All surahs">&#8592;</a><h1 id="ttl">Surah<small id="sub"></small></h1><a class="icon" href="progress.html" title="My progress" aria-label="My progress">&#128202;</a><button class="outbtn" id="out" title="Sign out" aria-label="Sign out">Logout</button></div>
+<div class="pstrip" id="pstrip"></div>
 <div class="tabs" role="tablist" id="tabs">
  <button class="tab" role="tab" id="t-animation" data-k="animation" aria-selected="true">&#127916; Animation</button>
  <button class="tab" role="tab" id="t-game" data-k="game" aria-selected="false">&#127918; Game</button>
@@ -15,6 +17,7 @@
 <div class="panel" id="p-worksheets" role="tabpanel"></div>
 <script src="assets/users.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/progress.js"></script>
 <script>
 (function(){
   if (!SurahSite.requireLogin()) { return; }
@@ -25,6 +28,27 @@
   document.getElementById('ttl').innerHTML = 'Surah ' + s.name + '<small>' + s.meaning + ' &bull; Surah ' + s.id + ' &bull; ' + s.ayahs + ' ayahs</small>';
   document.getElementById('out').onclick = SurahSite.logout;
   var loaded = {};
+  function renderProgress(){
+    var ps = SurahProgress.summary(s), r = SurahProgress.record(s.id), v = {}, kk = {}, N = s.ayahs;
+    (r.v || []).forEach(function(a){ v[a] = 1; }); (r.k || []).forEach(function(a){ kk[a] = 1; });
+    var h = '<div class="pstrip-top"><div class="ppct' + (ps.complete ? ' ok' : '') + '">' + (ps.complete ? '&#10003; All ayahs known' : ps.pct + '% known') + '</div>' +
+            '<div class="pnum">' + ps.viewed + ' watched &bull; ' + ps.known + ' known &bull; ' + N + ' ayahs</div></div>' +
+            '<div class="pbar big' + (ps.complete ? ' ok' : '') + '"><b style="width:' + ps.vpct + '%"></b><i style="width:' + ps.pct + '%"></i></div><div class="agrid" aria-label="Ayah progress">';
+    for (var a = 1; a <= N; a++) { h += '<span class="ay' + (kk[a] ? ' k' : (v[a] ? ' v' : '')) + '" title="Ayah ' + a + (kk[a] ? ' (known)' : (v[a] ? ' (watched)' : '')) + '">' + a + '</span>'; }
+    h += '</div><div class="phint">' + (s.animations.length ? 'Watch the animation and tap <b>&#9734; I know it!</b> on every ayah you know. Progress is saved when you use the animation on this page.' : 'Progress starts when this surah&rsquo;s animation is added.') + '</div>';
+    if (ps.started) { h += '<button class="sm-btn danger" id="rs">Reset this surah</button>'; }
+    document.getElementById('pstrip').innerHTML = h;
+    var rs = document.getElementById('rs');
+    if (rs) { rs.onclick = function(){ if (window.confirm('Reset the animation progress for this surah?')) { SurahProgress.resetSurah(s.id); renderProgress(); var fa = document.getElementById('fr-animation'); if (fa) { fa.src = fa.getAttribute('src'); } } }; }
+  }
+  window.addEventListener('message', function(e){
+    var d = e.data; if (!d || typeof d !== 'object' || d.surahId !== s.id) { return; }
+    var fa = document.getElementById('fr-animation');
+    if (fa && e.source === fa.contentWindow) {
+      if (d.type === 'sl-ready') { var st = SurahProgress.state(s.id); e.source.postMessage({type: 'sl-state', surahId: s.id, viewed: st.viewed, known: st.known}, '*'); }
+      else if (d.type === 'sl-anim') { SurahProgress.report(s.id, d.viewed, d.known, d.total); renderProgress(); }
+    }
+  });
   function soon(icon, what){ return '<div class="soon"><div class="big">' + icon + '</div><h3>Coming soon</h3><p>The ' + what + ' for Surah ' + s.name + ' will be added soon.</p></div>'; }
   function frameBlock(kind, items){
     var h = '<div class="vers">';
@@ -48,7 +72,13 @@
     worksheets: function(){
       var p = document.getElementById('p-worksheets');
       var groups = [['5-8', 'Ages 5&ndash;8'], ['9-12', 'Ages 9&ndash;12']];
-      var h = '<div class="agebar" role="tablist">';
+      var bk = '';
+      if (s.booklet) {
+        var bf = s.booklet.file, bn = bf.split('/').pop();
+        bk = '<div class="booklet"><div class="bk-ic">&#128214;</div><div class="bk-tx"><h3>Booklet download</h3><p>Surah ' + s.name + ' booklet &bull; ' + s.booklet.pages + ' pages &bull; PDF, ' + s.booklet.mb + ' MB</p></div>' +
+             '<div class="bk-acts"><a class="btn" href="' + bf + '" download="' + bn + '">&#11015; Download booklet</a><a class="btn ghost" href="' + bf + '" target="_blank" rel="noopener">Open</a></div></div>';
+      }
+      var h = bk + '<div class="agebar" role="tablist">';
       groups.forEach(function(g){ h += '<button class="age" role="tab" data-g="' + g[0] + '" aria-selected="false">' + g[1] + '</button>'; });
       h += '</div><div id="agebody"></div>';
       p.innerHTML = h;
@@ -85,6 +115,7 @@
       document.getElementById('p-' + tabs[i].getAttribute('data-k')).className = 'panel' + (on ? ' on' : '');
     }
     if (!loaded[k]) { builders[k](); loaded[k] = true; }
+    renderProgress();
     if (push) { history.replaceState(null, '', '#' + k); }
   }
   var tabs = document.querySelectorAll('.tab');
